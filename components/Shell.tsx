@@ -56,6 +56,17 @@ function SetupScreen() {
   );
 }
 
+function loginMessage(message: string) {
+  const text = message.toLowerCase();
+  if (text.includes("email not confirmed")) {
+    return "Este e-mail ainda não foi confirmado. No Supabase, abra Authentication → Users, confirme o usuário ou crie de novo com Auto Confirm marcado.";
+  }
+  if (text.includes("invalid login")) {
+    return "E-mail ou senha não encontrados. Use o usuário criado em Authentication → Users, não o login do painel do Supabase.";
+  }
+  return `Não foi possível entrar. ${message}`;
+}
+
 function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,9 +77,9 @@ function LoginScreen() {
     event.preventDefault();
     setError("");
     setLoading(true);
-    const { error: authError } = await createClient().auth.signInWithPassword({ email, password });
+    const { error: authError } = await createClient().auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
-    if (authError) setError("E-mail ou senha incorretos.");
+    if (authError) setError(loginMessage(authError.message));
   }
 
   return (
