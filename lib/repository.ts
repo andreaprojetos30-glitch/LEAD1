@@ -63,6 +63,11 @@ export function setActiveEventoId(id: string) {
   emit();
 }
 
+export function clearActiveEventoId() {
+  localStorage.removeItem(ACTIVE_EVENT_KEY);
+  emit();
+}
+
 export async function listEventos() {
   const rows = await db.eventos.toArray();
   return rows.sort((a, b) => b.created_at.localeCompare(a.created_at));

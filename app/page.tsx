@@ -28,7 +28,18 @@ export default function HomePage() {
   return (
     <main className="flex flex-col gap-6">
       <Wordmark />
-      {evento ? (
+      {evento?.status === "encerrado" ? (
+        <div className="flex flex-col gap-4">
+          <p className="text-center text-lg">
+            O evento {evento.nome} está encerrado. Cadastre o próximo para continuar a captação.
+          </p>
+          <ActionLink href="/evento" variant="primary">
+            Cadastrar novo evento
+          </ActionLink>
+          <ActionLink href="/leads">Ver leads</ActionLink>
+          <ActionLink href="/exportar">Exportar</ActionLink>
+        </div>
+      ) : evento ? (
         <>
           <ActionLink href="/lead/novo" variant="primary">
             Novo lead
