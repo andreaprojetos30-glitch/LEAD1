@@ -5,8 +5,7 @@ Sistema mobile para captar leads em feiras, congressos e ações comerciais. O c
 ## O que já funciona sem contas
 
 - Telas, máscaras, validações, painel e fila offline
-- Geração de Excel e PDF, assim que o Supabase estiver ligado
-- Botão de e-mail, que avisa o que falta até o Resend ser configurado
+- Geração de Excel, PDF resumo e PDF dos contatos, assim que o Supabase estiver ligado
 
 ## 1. Instalar e abrir
 
@@ -41,25 +40,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 Recomendado para evento: em **Authentication → Sessions**, aumente o tempo do JWT para 24 horas, para o celular não pedir senha no meio da feira.
 
-## 3. E-mail (quando quiser)
-
-1. Crie uma conta no [Resend](https://resend.com) e verifique o domínio de envio.
-2. No `.env.local`:
-
-```
-RESEND_API_KEY=
-RESEND_FROM=ELEVA <captacao@seudominio.com.br>
-```
-
-Sem essas chaves, Excel e PDF continuam baixando. O envio só avisa que ainda não está ativo.
-
 ## Uso no evento
 
 1. Entrar uma vez no celular. A sessão permanece.
 2. Cadastrar ou selecionar o evento. Os próximos leads já nascem nele.
 3. **Novo lead**, preencher e **Salvar lead**.
 4. **+ Cadastrar próximo lead**.
-5. No fim: **Encerrar evento**, gerar Excel, PDF ou enviar por e-mail.
+5. No fim: **Encerrar evento**, gerar Excel, PDF resumo ou PDF dos contatos.
 
 Se aparecer **Aguardando sincronização**, o cadastro está no aparelho e sobe sozinho quando a rede voltar. O registro local só sai da fila depois que o servidor confirma.
 

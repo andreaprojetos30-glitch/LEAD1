@@ -6,7 +6,6 @@ import {
   normalizeText,
   startOfTodaySaoPaulo,
   summarize,
-  validateEmails,
   validateLead,
   type Lead,
 } from "../lib/domain.ts";
@@ -107,8 +106,6 @@ assert.equal(stats.somaUnidades, 220);
 assert.equal(stats.perfil.sindico, 1);
 assert.equal(stats.academiaNaoInformado, 1);
 assert.equal(stats.interesseNaoInformado, 1);
-assert.equal(validateEmails("a@eleva.com, b@eleva.com").emails.length, 2);
-assert.ok(validateEmails("nao-e-email").error);
 assert.ok(!Number.isNaN(startOfTodaySaoPaulo().getTime()));
 
 console.log("domain ok");

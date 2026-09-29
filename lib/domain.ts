@@ -299,14 +299,3 @@ export function validateEvento(nome: string) {
   if (!nome.trim()) return "Informe o nome do evento.";
   return null;
 }
-
-export function validateEmails(value: string) {
-  const emails = value
-    .split(/[,;\s]+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-  if (emails.length === 0) return { emails: [], error: "Informe ao menos um e-mail." };
-  const invalid = emails.filter((email) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
-  if (invalid.length) return { emails: [], error: `E-mail inválido: ${invalid[0]}` };
-  return { emails, error: null };
-}

@@ -50,7 +50,7 @@ function SetupScreen() {
         <li>Rode o arquivo supabase/migrations/001_init.sql no SQL Editor.</li>
         <li>Crie um usuário da equipe em Authentication e desative a confirmação de e-mail.</li>
         <li>Copie .env.example para .env.local e cole as chaves.</li>
-        <li>Reinicie o servidor. O envio de e-mail entra quando a chave do Resend existir.</li>
+        <li>Reinicie o servidor e entre com o usuário da equipe.</li>
       </ol>
     </main>
   );
