@@ -44,7 +44,7 @@ create table if not exists public.leads (
   nome text not null check (char_length(trim(nome)) > 0),
   celular text not null,
   celular_normalizado text not null,
-  perfil text not null check (perfil in ('sindico', 'subsindico', 'conselho', 'morador', 'administradora', 'outro')),
+  perfil text not null check (perfil in ('sindico', 'consultor', 'subsindico', 'conselho', 'morador', 'administradora', 'outro')),
   condominio text not null check (char_length(trim(condominio)) > 0),
   condominio_normalizado text not null,
   nome_normalizado text not null,

@@ -1,5 +1,6 @@
 export type Perfil =
   | "sindico"
+  | "consultor"
   | "subsindico"
   | "conselho"
   | "morador"
@@ -48,6 +49,7 @@ export type Lead = {
 
 export const PERFIS: Perfil[] = [
   "sindico",
+  "consultor",
   "subsindico",
   "conselho",
   "morador",
@@ -57,6 +59,7 @@ export const PERFIS: Perfil[] = [
 
 export const PERFIL_LABEL: Record<Perfil, string> = {
   sindico: "Síndico",
+  consultor: "Consultor",
   subsindico: "Subsíndico",
   conselho: "Conselho",
   morador: "Morador",
@@ -220,6 +223,7 @@ export function emptyStats(): EventStats {
     mediaUnidades: 0,
     perfil: {
       sindico: 0,
+      consultor: 0,
       subsindico: 0,
       conselho: 0,
       morador: 0,
