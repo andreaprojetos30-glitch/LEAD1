@@ -101,12 +101,16 @@ export function Field({
 const controlClass =
   "min-h-14 w-full rounded-2xl border border-eleva/15 bg-white px-4 text-lg text-ink outline-none focus:border-gold";
 
-export function TextInput(props: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} className={`${controlClass} ${props.className ?? ""}`} />;
+export function TextInput({ className = "", autoComplete = "off", ...props }: InputHTMLAttributes<HTMLInputElement>) {
+  return <input {...props} autoComplete={autoComplete} className={`${controlClass} ${className}`} />;
 }
 
-export function TextArea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea {...props} className={`${controlClass} min-h-28 py-3 ${props.className ?? ""}`} />;
+export function TextArea({
+  className = "",
+  autoComplete = "off",
+  ...props
+}: TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return <textarea {...props} autoComplete={autoComplete} className={`${controlClass} min-h-28 py-3 ${className}`} />;
 }
 
 export function Choice({
