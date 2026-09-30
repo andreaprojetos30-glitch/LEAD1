@@ -64,6 +64,7 @@ const base = {
   possui_academia: "sim" as const,
   interesse: "sim" as const,
   observacao: null,
+  consultor: null,
   created_at: "2026-09-22T15:00:00.000Z",
   updated_at: "2026-09-22T15:00:00.000Z",
 };

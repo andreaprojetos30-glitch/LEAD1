@@ -18,14 +18,7 @@ import {
   type Lead,
   type Perfil,
 } from "@/lib/domain";
-import {
-  clearDraft,
-  findDuplicates,
-  getLead,
-  loadDraft,
-  saveDraft,
-  saveLead,
-} from "@/lib/repository";
+import { clearDraft, findDuplicates, getLead, saveLead } from "@/lib/repository";
 
 type FormState = {
   nome: string;
@@ -42,6 +35,7 @@ type FormState = {
   perfil: Perfil | "";
   interesse: Interesse | "";
   observacao: string;
+  consultor: string;
 };
 
 const emptyForm = (): FormState => ({
@@ -59,6 +53,7 @@ const emptyForm = (): FormState => ({
   perfil: "",
   interesse: "",
   observacao: "",
+  consultor: "",
 });
 
 function leadToForm(lead: Lead): FormState {
@@ -77,6 +72,7 @@ function leadToForm(lead: Lead): FormState {
     perfil: lead.perfil,
     interesse: lead.interesse ?? "",
     observacao: lead.observacao ?? "",
+    consultor: lead.consultor ?? "",
   };
 }
 
@@ -104,8 +100,8 @@ export function NovoLead() {
           setForm(leadToForm(lead));
         }
       } else {
-        const draft = await loadDraft<FormState>();
-        if (!cancel && draft) setForm(draft);
+        await clearDraft();
+        if (!cancel) setForm(emptyForm());
       }
       if (!cancel) setReady(true);
     }
@@ -114,14 +110,6 @@ export function NovoLead() {
       cancel = true;
     };
   }, [editingId]);
-
-  useEffect(() => {
-    if (!ready || editingId || saved) return;
-    const timer = window.setTimeout(() => {
-      void saveDraft(form);
-    }, 250);
-    return () => window.clearTimeout(timer);
-  }, [form, ready, editingId, saved]);
 
   useEffect(() => {
     const cep = digits(form.cep);
@@ -185,6 +173,7 @@ export function NovoLead() {
       possui_academia: form.possuiAcademia || null,
       interesse: form.interesse || null,
       observacao: form.observacao.trim() || null,
+      consultor: form.consultor.trim() || null,
       created_at: base?.created_at ?? now,
       updated_at: now,
     };
@@ -274,6 +263,10 @@ export function NovoLead() {
         <Button
           type="button"
           onClick={() => {
+            setForm(emptyForm());
+            setCepNote("");
+            setError("");
+            setDuplicates([]);
             setSaved(null);
           }}
         >
@@ -289,19 +282,19 @@ export function NovoLead() {
   const duplicate = duplicates[0];
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+    <form onSubmit={onSubmit} autoComplete="off" className="flex flex-col gap-5">
       <PageHeader
         title={editingId ? "Editar lead" : "Novo lead"}
         subtitle={evento?.nome}
         backHref={editingId && existing ? `/leads/${existing.id}` : "/"}
       />
       <Field label="Nome" required>
-        <TextInput value={form.nome} onChange={(event) => patch({ nome: event.target.value })} autoComplete="name" />
+        <TextInput value={form.nome} onChange={(event) => patch({ nome: event.target.value })} autoComplete="off" />
       </Field>
       <Field label="Celular / WhatsApp" required>
         <TextInput
           inputMode="tel"
-          autoComplete="tel"
+          autoComplete="off"
           placeholder="(00) 00000-0000"
           value={form.celular}
           onChange={(event) => patch({ celular: maskPhone(event.target.value) })}
@@ -395,6 +388,13 @@ export function NovoLead() {
           maxLength={280}
           value={form.observacao}
           onChange={(event) => patch({ observacao: event.target.value })}
+        />
+      </Field>
+      <Field label="Consultor">
+        <TextInput
+          autoComplete="off"
+          value={form.consultor}
+          onChange={(event) => patch({ consultor: event.target.value })}
         />
       </Field>
       {error ? <Notice tone="error">{error}</Notice> : null}

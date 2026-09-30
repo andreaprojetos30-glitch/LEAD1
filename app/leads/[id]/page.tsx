@@ -62,6 +62,7 @@ export default function LeadPage() {
     ["Possui academia", labelAcademia(lead.possui_academia)],
     ["Interesse", labelInteresse(lead.interesse)],
     ["Observação", lead.observacao || ""],
+    ["Consultor", lead.consultor || ""],
     ["Cadastro", formatDateTime(lead.created_at)],
     ["Atualização", formatDateTime(lead.updated_at)],
   ];

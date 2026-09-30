@@ -44,7 +44,7 @@ create table if not exists public.leads (
   nome text not null check (char_length(trim(nome)) > 0),
   celular text not null,
   celular_normalizado text not null,
-  perfil text not null check (perfil in ('sindico', 'consultor', 'subsindico', 'conselho', 'morador', 'administradora', 'outro')),
+  perfil text not null check (perfil in ('sindico', 'subsindico', 'conselho', 'morador', 'administradora', 'outro')),
   condominio text not null check (char_length(trim(condominio)) > 0),
   condominio_normalizado text not null,
   nome_normalizado text not null,
@@ -58,6 +58,7 @@ create table if not exists public.leads (
   possui_academia text check (possui_academia is null or possui_academia in ('sim', 'nao', 'nao_sei')),
   interesse text check (interesse is null or interesse in ('sim', 'talvez', 'nao', 'nao_conversado')),
   observacao text,
+  consultor text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (char_length(celular_normalizado) between 10 and 11)

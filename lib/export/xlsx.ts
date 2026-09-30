@@ -45,6 +45,7 @@ export async function buildWorkbook(evento: Evento, leads: Lead[]) {
     { header: "Possui academia", key: "academia", width: 18 },
     { header: "Interesse", key: "interesse", width: 28 },
     { header: "Observação", key: "observacao", width: 40 },
+    { header: "Consultor", key: "consultor", width: 28 },
     { header: "Data de criação", key: "criacao", width: 20 },
     { header: "Última atualização", key: "atualizacao", width: 22 },
   ];
@@ -75,11 +76,12 @@ export async function buildWorkbook(evento: Evento, leads: Lead[]) {
       academia: labelAcademia(lead.possui_academia),
       interesse: labelInteresse(lead.interesse),
       observacao: lead.observacao ?? "",
+      consultor: lead.consultor ?? "",
       criacao: formatDateTime(lead.created_at),
       atualizacao: formatDateTime(lead.updated_at),
     });
   }
-  sheet.autoFilter = { from: "A1", to: "T1" };
+  sheet.autoFilter = { from: "A1", to: "U1" };
   sheet.views = [{ state: "frozen", ySplit: 1 }];
 
   const resumo = workbook.addWorksheet("RESUMO DO EVENTO");

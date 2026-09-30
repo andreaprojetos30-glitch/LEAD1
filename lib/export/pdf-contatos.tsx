@@ -133,6 +133,7 @@ export async function buildContatosPdf(evento: Evento, leads: Lead[]) {
               <Text style={[styles.cell, styles.cidade]}>{cityLine(lead) || "—"}</Text>
               <Text style={[styles.cell, styles.interesse]}>{labelInteresse(lead.interesse) || "—"}</Text>
             </View>
+            {lead.consultor ? <Text style={styles.note}>Consultor: {lead.consultor}</Text> : null}
             {lead.observacao ? <Text style={styles.note}>Obs.: {lead.observacao}</Text> : null}
           </View>
         ))}
