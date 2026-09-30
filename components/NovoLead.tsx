@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { ActionLink, Button, Choice, Field, Notice, PageHeader, TextArea, TextInput } from "@/components/ui";
 import { useActiveEvento } from "@/components/useData";
 import {
@@ -197,8 +197,7 @@ export function NovoLead() {
     setExisting(null);
   }
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
+  async function saveNew() {
     setError("");
     const message = validateLead({
       nome: form.nome,
@@ -282,7 +281,7 @@ export function NovoLead() {
   const duplicate = duplicates[0];
 
   return (
-    <form onSubmit={onSubmit} autoComplete="off" className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       <PageHeader
         title={editingId ? "Editar lead" : "Novo lead"}
         subtitle={evento?.nome}
@@ -419,10 +418,10 @@ export function NovoLead() {
           </Button>
         </div>
       ) : (
-        <Button type="submit" disabled={saving}>
+        <Button type="button" disabled={saving} onClick={() => void saveNew()}>
           {saving ? "Salvando…" : "Salvar lead"}
         </Button>
       )}
-    </form>
+    </div>
   );
 }
