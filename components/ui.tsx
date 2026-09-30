@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
+import { createContext, useContext, useEffect, useRef, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
 
 export function Wordmark({ light = false }: { light?: boolean }) {
   return (
@@ -87,22 +87,59 @@ export function Field({
   children: ReactNode;
 }) {
   return (
-    <label className="block">
+    <div className="block">
       <span className="mb-2 block text-sm font-semibold uppercase tracking-wide text-eleva">
         {label}
         {required ? " *" : ""}
       </span>
       {children}
       {hint ? <span className="mt-1 block text-sm text-ink/60">{hint}</span> : null}
-    </label>
+    </div>
   );
+}
+
+const SuppressSuggestions = createContext(false);
+
+export function WithoutBrowserFill({ children }: { children: ReactNode }) {
+  return <SuppressSuggestions.Provider value={true}>{children}</SuppressSuggestions.Provider>;
 }
 
 const controlClass =
   "min-h-14 w-full rounded-2xl border border-eleva/15 bg-white px-4 text-lg text-ink outline-none focus:border-gold";
 
+function usePlainField<T extends HTMLInputElement | HTMLTextAreaElement>() {
+  const suppress = useContext(SuppressSuggestions);
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    if (!suppress) return;
+    const field = ref.current;
+    if (!field) return;
+    field.readOnly = true;
+    const unlock = () => {
+      window.setTimeout(() => {
+        field.readOnly = false;
+      }, 0);
+    };
+    field.addEventListener("focus", unlock);
+    return () => field.removeEventListener("focus", unlock);
+  }, [suppress]);
+
+  if (!suppress) return { ref };
+  return {
+    ref,
+    autoComplete: "off" as const,
+    autoCorrect: "off" as const,
+    spellCheck: false as const,
+    "data-1p-ignore": "true",
+    "data-form-type": "other",
+    "data-lpignore": "true",
+  };
+}
+
 export function TextInput({ className = "", autoComplete = "off", ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} autoComplete={autoComplete} className={`${controlClass} ${className}`} />;
+  const plain = usePlainField<HTMLInputElement>();
+  return <input {...props} {...plain} autoComplete={plain.autoComplete ?? autoComplete} className={`${controlClass} ${className}`} />;
 }
 
 export function TextArea({
@@ -110,7 +147,15 @@ export function TextArea({
   autoComplete = "off",
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea {...props} autoComplete={autoComplete} className={`${controlClass} min-h-28 py-3 ${className}`} />;
+  const plain = usePlainField<HTMLTextAreaElement>();
+  return (
+    <textarea
+      {...props}
+      {...plain}
+      autoComplete={plain.autoComplete ?? autoComplete}
+      className={`${controlClass} min-h-28 py-3 ${className}`}
+    />
+  );
 }
 
 export function Choice({

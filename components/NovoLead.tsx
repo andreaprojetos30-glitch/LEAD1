@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ActionLink, Button, Choice, Field, Notice, PageHeader, TextArea, TextInput } from "@/components/ui";
+import { ActionLink, Button, Choice, Field, Notice, PageHeader, TextArea, TextInput, WithoutBrowserFill } from "@/components/ui";
 import { useActiveEvento } from "@/components/useData";
 import {
   digits,
@@ -281,7 +281,8 @@ export function NovoLead() {
   const duplicate = duplicates[0];
 
   return (
-    <div className="flex flex-col gap-5">
+    <form autoComplete="off" className="flex flex-col gap-5" onSubmit={(event) => event.preventDefault()}>
+      <WithoutBrowserFill>
       <PageHeader
         title={editingId ? "Editar lead" : "Novo lead"}
         subtitle={evento?.nome}
@@ -422,6 +423,7 @@ export function NovoLead() {
           {saving ? "Salvando…" : "Salvar lead"}
         </Button>
       )}
-    </div>
+      </WithoutBrowserFill>
+    </form>
   );
 }
